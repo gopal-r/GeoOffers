@@ -1,0 +1,77 @@
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>Geo Offers</title>
+        <link href="https://fonts.googleapis.com/css?family=Raleway" rel="stylesheet">
+        <link href="styles.css" rel="stylesheet" type="text/css">
+    </head>
+    <body>
+        <h1>Geo Offers</h1>
+        <div id="homepage">
+            <h1> Get a local Offer</h1>
+            <div id="offers">
+
+            </div>
+        </div>
+        <script src="https://unpkg.com/babel-standalone@6/babel.min.js"></script>
+        <script src="https://unpkg.com/react@15/dist/react.js"></script>
+        <script src="https://unpkg.com/react-dom@15/dist/react-dom.min.js"></script>
+
+        <!--create a react component-->
+        <script type="text/babel">
+        var Offers = React.createClass({
+            getInitialState:function(){
+                return({
+                    offers: []
+                });
+            },
+            render:function(){
+                var offers = this.state.offers;
+                offers = offers.map(function (offer, index){
+                    return(
+                        <li key={index}>
+                            <span className="name">{offer.name}</span>  
+                            <span className="desc">{offer.desc}</span>
+                            <span className="dist">{Math.floor(offer.distance*0.000621371)} Miles away</span>
+                            </li>
+                    )
+                });
+                return (
+                <div id="offers-container">
+                    <form id="search" onSubmit={this.handleSubmit}>
+                        <label>Latitude</label>
+                        <input type="text" ref="lat" placeholder="latitude" required  />
+                        <label>Longitute</label>
+                        <input type="text" ref="lng" placeholder="longitude" required/>
+                        <label>Search txt</label>
+                        <input type="text" ref="txt" placeholder="text to search" required/>
+                        <input type="submit" value="Find Offers" />
+                    </form> 
+                    <ul><li><span className="name"><b>Name</b> </span>
+                        <span className="desc"><b>Description</b></span>
+                        <span className="dist"><b>Distance</b></span>
+                        </li>
+                        {offers}</ul>
+                </div>
+                );
+            },
+            handleSubmit: function(e){
+                e.preventDefault();
+                var lng=this.refs.lng.value;
+                var lat=this.refs.lat.value;
+                var txt=this.refs.txt.value;
+                fetch('/api/offers?lng='+lng+'&lat='+lat+'&txt='+txt).then(function(data){
+                    //console.log(data);
+                    return data.json();
+                }).then(json => {
+                    this.setState({
+                        offers: json
+                    });
+                    //console.log(json);
+                });
+            }
+        });
+        ReactDOM.render(<Offers />, document.getElementById('offers'));
+        </script>
+    </body>
+</html>
