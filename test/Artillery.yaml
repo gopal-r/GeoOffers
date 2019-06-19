@@ -1,7 +1,7 @@
 config:
   target: 'http://35.227.85.209'
   phases:
-    - duration: .001
+    - duration: 1
       arrivalRate: 1
 scenarios:
   - flow:
