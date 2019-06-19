@@ -1,0 +1,19 @@
+config:
+  target: 'http://35.227.85.209'
+  phases:
+    - duration: .001
+      arrivalRate: 1
+scenarios:
+  - flow:
+    - get:
+        url: "/api/offers?lng=-80&lat=25.78&txt=golf"
+    - post:
+        url: "/api/offers"
+        json:
+          id: "AJZHE5"
+          name: "Golf Discount"
+          desc: "10% off all golf gear and apparel at Sports & You"
+          available: true
+          geometry: 
+          -type: "Point"
+          -coordinates: [-80,25.791]
